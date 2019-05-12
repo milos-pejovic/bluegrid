@@ -7,6 +7,11 @@ use App\User;
 
 class UsersController extends Controller
 {
+    private $validationParameters = [
+        'name' => ['required', 'min:2'],
+        'email' => ['required', 'email']
+    ];
+    
     /**
      * 
      * @param Request $request
@@ -47,10 +52,7 @@ class UsersController extends Controller
      * @return type
      */
     public function create(Request $request) {
-        $this->validate(request(), [
-            'name' => ['required', 'min:2'],
-            'email' => ['required', 'email']
-	]);
+        $this->validate(request(), $this->validationParameters);
         
         $user = new User();
         $user->name = $request->name;
@@ -68,10 +70,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id) {
         $user = User::find($id);
-        $this->validate(request(), [
-            'name' => ['required', 'min:2'],
-            'email' => ['required', 'email']
-	]);
+        $this->validate(request(), $this->validationParameters);
         
         $user->name = $request->name;
         $user->email = $request->email;
