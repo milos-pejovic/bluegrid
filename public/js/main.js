@@ -105,7 +105,10 @@ function loadUsersWithAjax(data) {
                 linkHtml +=  '</span>';
                 paginationLinks.append(linkHtml);
             }
-	}
+	},
+        error: function(){
+            console.warn('AJAX error');
+        }
     });
 }
 
@@ -176,7 +179,10 @@ function deleteUserWithAjax(userId) {
         },
 	success: function(result) {
             $('.user-table-entry[data-id="' + userId + '"]').remove();
-	}
+	},
+        error: function(){
+            console.warn('AJAX error');
+        }
     });
 }
 
@@ -204,7 +210,14 @@ $('.create-user-form').on('submit', function(e) {
             entryHtml += '<td><button class="delete-user" data-id=' + result + '>Delete</button></td>';
             entryHtml += '</tr>';
             allUsersTable.append(entryHtml);
-	}
+            form.find('input.name').val('');
+            form.find('input.email').val('');
+	},
+        error: function(){
+            console.warn('AJAX error');
+            form.find('input.name').val('');
+            form.find('input.email').val('');
+        }
     });
     form.parents('.modal-wrap').hide();
 });
@@ -239,7 +252,10 @@ $('.edit-user-form').on('submit', function(e) {
             var userTableEntry = $('.user-table-entry[data-id="'+result+'"]');
             userTableEntry.find('.name').text(form.find('input.name').val());
             userTableEntry.find('.email').text(form.find('input.email').val());
-	}
+	},
+        error: function(){
+            console.warn('AJAX error');
+        }
     });
     form.parents('.modal-wrap').hide();
 });
@@ -277,4 +293,3 @@ $('.modal-wrap').on('click', function(e) {
     if (!$(e.target).closest('.modal').length)
         $(this).hide();
 });	
-
