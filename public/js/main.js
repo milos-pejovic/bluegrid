@@ -10,13 +10,28 @@ var sortById = $('.all-users .linkId');
 // On page load
 
 $(document).ready(function() {
-    loadUsersWithAjax({
+    var data = {
         params : {
             page : 0,
             limit : 10
         }
-    });
+    };
+    data = addSearchParams(data);
+    loadUsersWithAjax(data);
 });
+
+// Add search parameters to ajax data
+
+function addSearchParams(data) {
+    var name = $('.search-user-form .name').val();
+    var email = $('.search-user-form .email').val();
+    
+    data.searchParams = {};
+    data.searchParams.name = (name != '') ? name : '';
+    data.searchParams.email = (email != '') ? email : '';
+    
+    return data;
+}
 
 // Load users
 
@@ -33,9 +48,14 @@ function loadUsersWithAjax(data) {
     if (data.params.sortBy)
         parameters.push('sort_by=' + data.params.sortBy);
     
-    if (parameters.length > 0) {
+    if (data.searchParams.name)
+        parameters.push('searchName=' + data.searchParams.name);
+    
+    if (data.searchParams.email)
+        parameters.push('searchEmail=' + data.searchParams.email);
+    
+    if (parameters.length > 0) 
         requestUrl += '?' + parameters.join('&');
-    }
     
     $.ajax({
 	type: 'GET',
@@ -92,14 +112,16 @@ function loadUsersWithAjax(data) {
 // Load selected page
 
 $('.pagination-links').delegate('.pagination-link', 'click', function() {
-  var page = parseInt($(this).text());
-  loadUsersWithAjax({
+    var page = parseInt($(this).text());
+    var data = {
         params : {
             page : page,
             limit : parseInt($('.result-per-page').val()),
             sortBy : $('.all-users').attr('data-sorted-by')
         }
-    });
+    };
+    data = addSearchParams(data);
+    loadUsersWithAjax(data);
 });
 
 // Sort by a value
@@ -111,6 +133,7 @@ function sortUserByValue(value) {
     data.params = {};
     data.params.sortBy = value;
     data.params.limit = parseInt($('.result-per-page').val());
+    data = addSearchParams(data);
     loadUsersWithAjax(data);
 }
 
@@ -215,4 +238,18 @@ $('.edit-user-form').on('submit', function(e) {
             userTableEntry.find('.email').text(form.find('input.email').val());
 	}
     });
+});
+
+// Search functionality
+
+$('.search-user-form').on('submit', function(e) {
+    e.preventDefault();
+    var data = {
+        params : {
+            page : 0,
+            limit : parseInt($('.result-per-page').val())
+        }
+    };
+    data = addSearchParams(data);
+    loadUsersWithAjax(data);
 });

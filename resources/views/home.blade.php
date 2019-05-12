@@ -60,6 +60,24 @@
         
         <hr />
         
+        <div class="search">
+            <fieldset>
+                <legend>Search</legend>
+                <form class="search-user-form">
+                    <label>
+                        Name
+                        <input type="text" name="name" class="name" /> 
+                    </label><br />
+
+                    <label>
+                        Email
+                        <input type="text" name="email" class="email" /> 
+                    </label><br />
+                    <input type="submit" value="Search" />
+                </form>
+            </fieldset>
+        </div>
+        
         <div class="all-users-wrap">
             <h3 class="no-users">There are no users</h3>
             <table class="all-users" data-sorted-by="id" cellpadding="5px">

@@ -13,12 +13,22 @@ class UsersController extends Controller
      * @return type
      */
     public function index(Request $request) {
+        $nameSearchParam = isset($request->searchName) ? $request->searchName : '';
+        $emailSearchParam = isset($request->searchEmail) ? $request->searchEmail : '';
+        
         $sort_by = $request->sort_by;
         $limit = (isset($request->limit)) ? $request->limit : 15;
         
-        if ($sort_by == 'name' || $sort_by == 'email' || $sort_by == 'id')
-            return User::orderBy($sort_by, 'asc')->paginate($limit);
-        return User::paginate($limit);
+        if ($sort_by == 'name' || $sort_by == 'email' || $sort_by == 'id') {
+            return User::where('name', 'like', '%' . $nameSearchParam . '%')
+                    ->where('email', 'like', '%' . $emailSearchParam . '%')
+                    ->orderBy($sort_by, 'asc')
+                    ->paginate($limit);
+        } else {
+            return User::where('name', 'like', '%' . $nameSearchParam . '%')
+                    ->where('email', 'like', '%' . $emailSearchParam . '%')
+                    ->paginate($limit);
+        }
     }
 
     /**
