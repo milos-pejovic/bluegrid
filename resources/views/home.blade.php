@@ -16,6 +16,47 @@
     </head>
     <body>
 
+        <div class="edit-user-modal">
+            <fieldset>
+                <legend>Edit user:</legend>
+                <form class="edit-user-form">
+                    
+                    <input type="text" name="id" class="id" style="display:none"/>
+                    
+                    <label>
+                        Name
+                        <input type="text" name="name" class="name" /> 
+                    </label><br />
+
+                    <label>
+                        Email
+                        <input type="text" name="email" class="email" /> 
+                    </label><br />
+                    <input type="submit" value="Update user" />
+                </form>
+            </fieldset>
+        </div>
+        
+        <div>
+             <fieldset>
+                <legend>Create user:</legend>
+                <form class="create-user-form">
+                <label>
+                    Name
+                    <input type="text" name="name" class="name" /> 
+                </label><br />
+                
+                <label>
+                    Email
+                    <input type="text" name="email" class="email" /> 
+                </label><br />
+                <input type="submit" value="Create user" />
+            </form>
+            </fieldset>
+        </div>
+        
+        <hr />
+        
         <div class="all-users-wrap">
             <h3 class="no-users">There are no users</h3>
             <table class="all-users" data-sorted-by="id">

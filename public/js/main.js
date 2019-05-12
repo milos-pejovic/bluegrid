@@ -8,6 +8,7 @@ var sortByEmail = $('.all-users .linkEmail');
 var sortById = $('.all-users .linkId');
 
 // Load users
+
 function loadUsersWithAjax(data) {
     var requestUrl = '/users';
     var parameters = [];
@@ -45,11 +46,11 @@ function loadUsersWithAjax(data) {
             
             // Results
             for (var i = 0; i < numberOfResults; i++){
-                var entryHtml = '<tr class="user-table-entry"><td>';
+                var entryHtml = '<tr class="user-table-entry id" data-id=' + result.data[i].id + '><td>';
                 entryHtml += result.data[i].id + '</td>';
-                entryHtml += '<td>' + result.data[i].name + '</td>';
-                entryHtml += '<td>' + result.data[i].email + '</td>';
-                entryHtml += '<td><button class="edit-user">Edit</button></td>';
+                entryHtml += '<td class="name">' + result.data[i].name + '</td>';
+                entryHtml += '<td class="email">' + result.data[i].email + '</td>';
+                entryHtml += '<td><button class="edit-user" data-id=' + result.data[i].id + '>Edit</button></td>';
                 entryHtml += '<td><button class="delete-user" data-id=' + result.data[i].id + '>Delete</button></td>';
                 entryHtml += '</tr>';
                 allUsersTable.append(entryHtml);
@@ -133,9 +134,9 @@ $(document).ready(function() {
 $('.all-users').delegate('.delete-user', 'click', function() {
     var userId = $(this).attr('data-id');
     
-    //if (!confirm('Delete user with ID ' + userId + '?')) {
-    //   return;
-    //}
+    if (!confirm('Delete user with ID ' + userId + '?')) {
+       return;
+    }
     
     deleteUserWithAjax(userId);
 });
@@ -145,7 +146,66 @@ function deleteUserWithAjax(userId) {
         type: 'DELETE',
         url: '/users/' + userId,
 	success: function(result) {
-            
+            $('.user-table-entry[data-id="'+userId+'"]').remove();
 	}
     });
 }
+
+$('.create-user-form').on('submit', function(e) {
+    e.preventDefault();
+    var form = $(this);
+    content = $(this).serialize();
+    
+    $.ajax({
+	type: 'POST',
+	url: '/users/create',
+	data: content,
+	dataType: 'json',
+	success: function(result) {
+            var entryHtml = '<tr class="user-table-entry id" data-id=' + result + '><td>';
+            entryHtml += result + '</td>';
+            entryHtml += '<td class="name">' + form.find('input.name').val() + '</td>';
+            entryHtml += '<td class="email">' + form.find('input.email').val() + '</td>';
+            entryHtml += '<td><button class="edit-user" data-id=' + result + '>Edit</button></td>';
+            entryHtml += '<td><button class="delete-user" data-id=' + result + '>Delete</button></td>';
+            entryHtml += '</tr>';
+            allUsersTable.append(entryHtml);
+	}
+    });
+});
+
+// Editing users
+
+$('.all-users').delegate('.edit-user', 'click', function() {
+  var editForm = $('.edit-user-modal');
+  var userTableEntry = $(this).parents('.user-table-entry');
+  
+  editForm.find('.name').val(userTableEntry.find('.name').text());
+  editForm.find('.email').val(userTableEntry.find('.email').text());
+  editForm.find('.id').val(userTableEntry.attr('data-id'));
+});
+
+$('.edit-user-form').on('submit', function(e) {
+    e.preventDefault();
+    var form = $(this);
+    content = $(this).serialize();
+    
+    $.ajax({
+	type: 'PATCH',
+	url: '/users/update/' + $(this).find('.id').val(),
+	data: content,
+	dataType: 'json',
+	success: function(result) {
+            $('.user-table-entry[data-id="'+result+'"]').remove();
+            
+            var entryHtml = '<tr class="user-table-entry id" data-id=' + result + '><td>';
+            entryHtml += result + '</td>';
+            entryHtml += '<td class="name">' + form.find('input.name').val() + '</td>';
+            entryHtml += '<td class="email">' + form.find('input.email').val() + '</td>';
+            entryHtml += '<td><button class="edit-user" data-id=' + result + '>Edit</button></td>';
+            entryHtml += '<td><button class="delete-user" data-id=' + result + '>Delete</button></td>';
+            entryHtml += '</tr>';
+            allUsersTable.append(entryHtml);
+	}
+    });
+});
