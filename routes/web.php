@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/users/{limit?}/{sort_by?}', 'UsersController@index');
+//Route::get('/users/{limit?}/{sort_by?}', 'UsersController@index');
+Route::get('/users', 'UsersController@index');
