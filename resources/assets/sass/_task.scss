@@ -1,0 +1,107 @@
+$buttonBackground: #abbddb;
+$buttonActiveBackground: #5589e0;
+$buttonHover: #f9c184;
+$textColor: #563d1f;
+$modalWrapColor: rgba(100, 100, 100, 0.8);
+$buttonPadding: 7px 15px;
+
+body {
+    position: relative;
+    margn: 0;
+    padding: 0;
+}
+
+p, 
+a, 
+span,
+label,
+table,
+button,
+legend,
+input,
+h1, h2, h3, h4, h5, h6 {
+    color: $textColor;
+    font-size: 18px;
+}
+
+.modal-wrap,
+.search {
+    button,
+    input[type="submit"] {
+        padding: $buttonPadding;
+        background-color: $buttonBackground;
+        cursor: pointer;
+        &:hover {
+            background-color: $buttonHover;
+        }
+    }
+}
+
+.create-user-button,
+.edit-user,
+.delete-user {
+    padding: $buttonPadding;
+    background-color: $buttonBackground;
+    cursor: pointer;
+    &:hover {
+        background-color: $buttonHover;
+    }
+}
+
+.pagination-links {
+    a {
+        display: inline-block;
+        background-color: $buttonBackground;
+        padding: 5px 10px;
+        margin: 5px;
+        &:hover {
+            background-color: $buttonHover;
+        }
+    }
+
+    .current-page a {
+        background-color: $buttonActiveBackground;
+        &:hover {
+            background-color: $buttonHover;
+        }
+    }
+}
+
+.all-users-wrap {
+    table, td, th {
+        border: 1px solid #000;
+    }
+
+    td, th {
+        padding: 5px, 10px;
+    }
+}
+
+.modal-wrap {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: $modalWrapColor;   
+    text-align: center;
+    
+    .modal {
+        padding: 10px 20px;
+        margin-top: 200px;
+        background-color: #fff;
+        display: inline-block;
+        
+        fieldset {
+            padding: 20px 30px;
+            
+            label {
+                display: inline-block;
+                margin: 10px 0;
+            }
+        }
+    }
+}
+
+.modal-wrap.create, 
+.modal-wrap.edit,{
+    display: none;
+} 

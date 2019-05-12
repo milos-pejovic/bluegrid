@@ -206,13 +206,16 @@ $('.create-user-form').on('submit', function(e) {
             allUsersTable.append(entryHtml);
 	}
     });
+    form.parents('.modal-wrap').hide();
 });
 
 // Editing users
 
 $('.all-users').delegate('.edit-user', 'click', function() {
-  var editForm = $('.edit-user-modal');
+  var editForm = $('.edit-user-modal');  
   var userTableEntry = $(this).parents('.user-table-entry');
+  
+  editForm.parents('.modal-wrap').show();
   
   editForm.find('.name').val(userTableEntry.find('.name').text());
   editForm.find('.email').val(userTableEntry.find('.email').text());
@@ -238,6 +241,7 @@ $('.edit-user-form').on('submit', function(e) {
             userTableEntry.find('.email').text(form.find('input.email').val());
 	}
     });
+    form.parents('.modal-wrap').hide();
 });
 
 // Search functionality
@@ -253,3 +257,24 @@ $('.search-user-form').on('submit', function(e) {
     data = addSearchParams(data);
     loadUsersWithAjax(data);
 });
+
+// Close modal buttons
+
+$('.modal-wrap .cancel').on('click', function(e) {
+    e.preventDefault();
+    $(this).parents('.modal-wrap').hide();
+});
+
+// Create user button
+
+$('.create-user-button').on('click', function() {
+    $('.modal-wrap.create').show();
+});
+
+// Lightbox close on click
+
+$('.modal-wrap').on('click', function(e) {
+    if (!$(e.target).closest('.modal').length)
+        $(this).hide();
+});	
+
