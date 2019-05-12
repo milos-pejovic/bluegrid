@@ -6,7 +6,6 @@ var paginationLinks = $('.pagination-links');
 var sortByName = $('.all-users .linkName');
 var sortByEmail = $('.all-users .linkEmail');
 var sortById = $('.all-users .linkId');
-//var resultsPerPage = parseInt($('.result-per-page').val());
 
 // Load users
 function loadUsersWithAjax(data) {
@@ -33,13 +32,15 @@ function loadUsersWithAjax(data) {
             allUsersTable.show();
             noUsersWarning.hide();
             
-            console.warn(result);
-            return;
+            $('.user-table-entry').remove();
+            $('.pagination-links').html('');
             
             if (result) {
                 var numberOfResults = result.data.length; 
             } else {
-                // todo
+                allUsersTable.hide();
+                noUsersWarning.show();
+                return;
             }
             
             // Results
@@ -63,7 +64,7 @@ function loadUsersWithAjax(data) {
                     linkHtml = '<span>';
                 }
                 
-                linkHtml += '<a href="#">';
+                linkHtml += '<a class="pagination-link" href="#">';
                 linkHtml += j;
                 linkHtml += '</a>';
                 linkHtml +=  '</span>';
@@ -74,11 +75,25 @@ function loadUsersWithAjax(data) {
     });
 }
 
+// Load selected page
+
+$('.pagination-links').delegate('.pagination-link', 'click', function() {
+  var page = parseInt($(this).text());
+  loadUsersWithAjax({
+        params : {
+            page : page,
+            limit : parseInt($('.result-per-page').val()),
+            sortBy : $('.all-users').attr('data-sorted-by')
+        }
+    });
+});
+
 // Sort by a value
 
 function sortUserByValue(value) {
-    $('.user-table-entry').remove();
     var data = {};
+    $('.sortingLink').removeClass('sortedBy');
+    $('.all-users').attr('data-sorted-by', value); 
     data.params = {};
     data.params.sortBy = value;
     data.params.limit = parseInt($('.result-per-page').val());
@@ -88,19 +103,23 @@ function sortUserByValue(value) {
 sortByName.on('click', function(e) {
     e.preventDefault();
     sortUserByValue('name');
+    $(this).addClass('sortedBy');
 });
 
 sortByEmail.on('click', function(e) {
     e.preventDefault();
     sortUserByValue('email');
+    $(this).addClass('sortedBy');
 });
 
 sortById.on('click', function(e) {
     e.preventDefault();
     sortUserByValue('id');
+    $(this).addClass('sortedBy');
 });
 
 // On page load
+
 $(document).ready(function() {
     loadUsersWithAjax({
         params : {

@@ -7,7 +7,6 @@ use App\User;
 
 class UsersController extends Controller
 {
-    //public function index(Request $request, $limit = null, $sort_by = null) {
     public function index(Request $request) {
         
         $sort_by = $request->sort_by;

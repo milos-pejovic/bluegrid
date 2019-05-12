@@ -18,11 +18,11 @@
 
         <div class="all-users-wrap">
             <h3 class="no-users">There are no users</h3>
-            <table class="all-users">
+            <table class="all-users" data-sorted-by="id">
                 <tr>
-                    <th><a class="linkId" href="#">Id</a></th>
-                    <th><a class="linkName" href="#">Name</a></th> 
-                    <th><a class="linkEmail" href="#">Email</a></th>
+                    <th><a class="linkId sortingLink sortedBy" href="#">Id</a></th>
+                    <th><a class="linkName sortingLink" href="#">Name</a></th> 
+                    <th><a class="linkEmail sortingLink" href="#">Email</a></th>
                 </tr>
             </table>
             <span>Results per page:</span><input class="result-per-page" type="number" min="1" value="15"/><br />
