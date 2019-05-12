@@ -7,6 +7,8 @@
 
         <title>BlueGrid task</title>
 
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
         <script
@@ -59,13 +61,16 @@
         
         <div class="all-users-wrap">
             <h3 class="no-users">There are no users</h3>
-            <table class="all-users" data-sorted-by="id">
+            <table class="all-users" data-sorted-by="id" cellpadding="5px">
                 <tr>
                     <th><a class="linkId sortingLink sortedBy" href="#">Id</a></th>
                     <th><a class="linkName sortingLink" href="#">Name</a></th> 
                     <th><a class="linkEmail sortingLink" href="#">Email</a></th>
                 </tr>
             </table>
+            
+            <hr />
+            
             <span>Results per page:</span><input class="result-per-page" type="number" min="1" value="15"/><br />
             <div class="pagination-links">
                 
