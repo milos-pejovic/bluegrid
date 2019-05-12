@@ -7,8 +7,26 @@ use App\User;
 
 class UsersController extends Controller
 {
+    /**
+     * 
+     * @param Request $request
+     * @return type
+     */
     public function index(Request $request) {
-        
+        return $this->loadUsers($request);
+    }
+    
+    /**
+     * 
+     * @param type $id
+     */
+    public function delete($id) {
+        error_log('DELETE');
+        User::where('id',$id)->delete();
+        return 'success';
+    }
+    
+    private function loadUsers($request) {
         $sort_by = $request->sort_by;
         $limit = (isset($request->limit)) ? $request->limit : 15;
         
@@ -20,4 +38,5 @@ class UsersController extends Controller
             return User::orderBy($sort_by, 'asc')->paginate($limit);
         return User::paginate($limit);
     }
+    
 }

@@ -11,8 +11,10 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('home');
 });
 
 Route::get('/users', 'UsersController@index');
+Route::delete('/users/{id}', 'UsersController@delete');

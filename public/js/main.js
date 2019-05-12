@@ -49,8 +49,8 @@ function loadUsersWithAjax(data) {
                 entryHtml += result.data[i].id + '</td>';
                 entryHtml += '<td>' + result.data[i].name + '</td>';
                 entryHtml += '<td>' + result.data[i].email + '</td>';
-                entryHtml += '<td><button>Edit</button></td>';
-                entryHtml += '<td><button>Delete</button></td>';
+                entryHtml += '<td><button class="edit-user">Edit</button></td>';
+                entryHtml += '<td><button class="delete-user" data-id=' + result.data[i].id + '>Delete</button></td>';
                 entryHtml += '</tr>';
                 allUsersTable.append(entryHtml);
             }
@@ -70,7 +70,6 @@ function loadUsersWithAjax(data) {
                 linkHtml +=  '</span>';
                 paginationLinks.append(linkHtml);
             }
-            
 	}
     });
 }
@@ -129,3 +128,24 @@ $(document).ready(function() {
     });
 });
 
+// Deleting
+
+$('.all-users').delegate('.delete-user', 'click', function() {
+    var userId = $(this).attr('data-id');
+    
+    //if (!confirm('Delete user with ID ' + userId + '?')) {
+    //   return;
+    //}
+    
+    deleteUserWithAjax(userId);
+});
+
+function deleteUserWithAjax(userId) {
+    $.ajax({
+        type: 'DELETE',
+        url: '/users/' + userId,
+	success: function(result) {
+            
+	}
+    });
+}
