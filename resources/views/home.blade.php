@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        
         <title>BlueGrid task</title>
 
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -71,7 +72,7 @@
             
             <hr />
             
-            <span>Results per page:</span><input class="result-per-page" type="number" min="1" value="15"/><br />
+            <span>Results per page:</span><input class="result-per-page" type="number" min="1" value="10"/><br />
             <div class="pagination-links">
                 
             </div>

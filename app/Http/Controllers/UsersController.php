@@ -7,6 +7,11 @@ use App\User;
 
 class UsersController extends Controller
 {
+    /**
+     * 
+     * @param Request $request
+     * @return type
+     */
     public function index(Request $request) {
         $sort_by = $request->sort_by;
         $limit = (isset($request->limit)) ? $request->limit : 15;
@@ -16,11 +21,21 @@ class UsersController extends Controller
         return User::paginate($limit);
     }
 
-    public function delete($id) {
+    /**
+     * 
+     * @param type $id
+     * @return string
+     */
+    public function delete(Request $request, $id) {
         User::where('id', $id)->delete();
         return 'success';
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @return type
+     */
     public function create(Request $request) {
         $this->validate(request(), [
             'name' => ['required', 'min:2'],
@@ -35,6 +50,12 @@ class UsersController extends Controller
         return $user->id;
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return type
+     */
     public function update(Request $request, $id) {
         $user = User::find($id);
         $this->validate(request(), [

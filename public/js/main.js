@@ -7,6 +7,17 @@ var sortByName = $('.all-users .linkName');
 var sortByEmail = $('.all-users .linkEmail');
 var sortById = $('.all-users .linkId');
 
+// On page load
+
+$(document).ready(function() {
+    loadUsersWithAjax({
+        params : {
+            page : 0,
+            limit : 10
+        }
+    });
+});
+
 // Load users
 
 function loadUsersWithAjax(data) {
@@ -29,6 +40,9 @@ function loadUsersWithAjax(data) {
     $.ajax({
 	type: 'GET',
 	url: requestUrl,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
 	success: function (result) {
             allUsersTable.show();
             noUsersWarning.hide();
@@ -118,18 +132,7 @@ sortById.on('click', function(e) {
     $(this).addClass('sortedBy');
 });
 
-// On page load
-
-$(document).ready(function() {
-    loadUsersWithAjax({
-        params : {
-            page : 0,
-            limit : 10
-        }
-    });
-});
-
-// Deleting
+// Deleting a user
 
 $('.all-users').delegate('.delete-user', 'click', function() {
     var userId = $(this).attr('data-id');
@@ -145,11 +148,16 @@ function deleteUserWithAjax(userId) {
     $.ajax({
         type: 'DELETE',
         url: '/users/' + userId,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
 	success: function(result) {
-            $('.user-table-entry[data-id="'+userId+'"]').remove();
+            $('.user-table-entry[data-id="' + userId + '"]').remove();
 	}
     });
 }
+
+// Creating a user
 
 $('.create-user-form').on('submit', function(e) {
     e.preventDefault();
@@ -158,9 +166,12 @@ $('.create-user-form').on('submit', function(e) {
     
     $.ajax({
 	type: 'POST',
-	url: '/users/create',
+	url: '/users',
 	data: content,
 	dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
 	success: function(result) {
             var entryHtml = '<tr class="user-table-entry id" data-id=' + result + '><td>';
             entryHtml += result + '</td>';
@@ -192,20 +203,16 @@ $('.edit-user-form').on('submit', function(e) {
     
     $.ajax({
 	type: 'PATCH',
-	url: '/users/update/' + $(this).find('.id').val(),
+	url: '/users/' + $(this).find('.id').val(),
 	data: content,
 	dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
 	success: function(result) {
-            $('.user-table-entry[data-id="'+result+'"]').remove();
-            
-            var entryHtml = '<tr class="user-table-entry id" data-id=' + result + '><td>';
-            entryHtml += result + '</td>';
-            entryHtml += '<td class="name">' + form.find('input.name').val() + '</td>';
-            entryHtml += '<td class="email">' + form.find('input.email').val() + '</td>';
-            entryHtml += '<td><button class="edit-user" data-id=' + result + '>Edit</button></td>';
-            entryHtml += '<td><button class="delete-user" data-id=' + result + '>Delete</button></td>';
-            entryHtml += '</tr>';
-            allUsersTable.append(entryHtml);
+            var userTableEntry = $('.user-table-entry[data-id="'+result+'"]');
+            userTableEntry.find('.name').text(form.find('input.name').val());
+            userTableEntry.find('.email').text(form.find('input.email').val());
 	}
     });
 });

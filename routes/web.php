@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/users/create', 'UsersController@create');
-Route::patch('/users/update/{id}', 'UsersController@update');
+Route::post('/users', 'UsersController@create');
+Route::patch('/users/{id}', 'UsersController@update');
 Route::get('/users', 'UsersController@index');
 Route::delete('/users/{id}', 'UsersController@delete');
